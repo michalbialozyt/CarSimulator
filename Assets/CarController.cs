@@ -18,8 +18,29 @@ public class CarController : MonoBehaviour
         input = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
 
-        if (CM) { 
+        if (CM)
+        {
             rb.centerOfMass = CM.position;
+        }
+
+        foreach (WheelCollider wheel in throttleWheels)
+        {
+            var suspension = wheel.suspensionSpring;
+            suspension.spring = 8000;  // Si³a sprê¿yny
+            suspension.damper = 1100;   // T³umienie
+            suspension.targetPosition = 0.5f;  // Pozycja neutralna sprê¿yny
+            wheel.suspensionSpring = suspension;
+            wheel.suspensionDistance = 0.5f; // Zakres pracy zawieszenia
+        }
+
+        foreach (WheelCollider wheel in steeringWheels)
+        {
+            var suspension = wheel.suspensionSpring;
+            suspension.spring = 8000;
+            suspension.damper = 500;
+            suspension.targetPosition = 0.5f;
+            wheel.suspensionSpring = suspension;
+            wheel.suspensionDistance = 0.3f;
         }
     }
 
