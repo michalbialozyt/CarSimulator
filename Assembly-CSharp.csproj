@@ -62,8 +62,12 @@
   <ItemGroup>
     <Compile Include="Assets\InputManager.cs" />
     <Compile Include="Assets\CarController.cs" />
+    <Compile Include="Assets\VehicleManager.cs" />
     <Compile Include="Assets\CameraManager.cs" />
     <Compile Include="Assets\AntiRoll.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\PickupTruck\Documentation.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

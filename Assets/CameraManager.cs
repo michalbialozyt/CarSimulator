@@ -18,7 +18,6 @@ public class CameraManager : MonoBehaviour
     public float thirdCamHeight = 1.5f; // A bit lower than the default height
     public float thirdCamDampening = 0.1f; // Less dynamic means higher dampening for smoother follow
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.C))
@@ -26,14 +25,16 @@ public class CameraManager : MonoBehaviour
             camMode = (camMode + 1) % 3; // Now cycles through three camera modes
         }
 
+        UpdateCameraPosition();
+    }
+
+    void UpdateCameraPosition()
+    {
         switch (camMode)
         {
             case 2:
-                transform.position = focus.transform.position + focus.transform.TransformDirection(new Vector3(0, height, d2 - distance + 1));
+                transform.position = focus.transform.position + focus.transform.TransformDirection(new Vector3(0, thirdCamHeight, d2 - thirdCamDistance + 1));
                 transform.rotation = Quaternion.LookRotation(focus.transform.position - transform.position + 0.1f * Vector3.down * height);
-                break;
-                transform.rotation = focus.transform.rotation;
-                Camera.main.fieldOfView = 90f;
                 break;
             case 1:
                 transform.position = focus.transform.position + focus.transform.TransformDirection(new Vector3(l, h2, d2));
@@ -47,5 +48,17 @@ public class CameraManager : MonoBehaviour
         }
 
         Debug.Log(camMode);
+    }
+
+    public void SetFocus(GameObject newFocus)
+    {
+        focus = newFocus;
+    }
+
+    public void UpdateCameraSettings(float newDistance, float newHeight, float newDampening)
+    {
+        distance = newDistance;
+        height = newHeight;
+        dampening = newDampening;
     }
 }

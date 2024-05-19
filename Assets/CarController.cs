@@ -13,6 +13,7 @@ public class CarController : MonoBehaviour
     public float maxTurn = 20f;
     public Rigidbody rb;
     public Transform CM;
+
     void Start()
     {
         input = GetComponent<InputManager>();
@@ -23,46 +24,65 @@ public class CarController : MonoBehaviour
             rb.centerOfMass = CM.position;
         }
 
-        foreach (WheelCollider wheel in throttleWheels)
-        {
-            var suspension = wheel.suspensionSpring;
-            suspension.spring = 8000;  // Si³a sprê¿yny
-            suspension.damper = 1100;   // T³umienie
-            suspension.targetPosition = 0.5f;  // Pozycja neutralna sprê¿yny
-            wheel.suspensionSpring = suspension;
-            wheel.suspensionDistance = 0.5f; // Zakres pracy zawieszenia
-        }
+        SetupWheels(throttleWheels);
+        SetupWheels(steeringWheels);
+    }
 
-        foreach (WheelCollider wheel in steeringWheels)
+    void SetupWheels(List<WheelCollider> wheels)
+    {
+        foreach (WheelCollider wheel in wheels)
         {
             var suspension = wheel.suspensionSpring;
-            suspension.spring = 8000;
-            suspension.damper = 500;
-            suspension.targetPosition = 0.5f;
+            suspension.spring = 8000;  // Suspension spring force
+            suspension.damper = 1100;   // Damping force
+            suspension.targetPosition = 1f;  // Neutral position of the spring
             wheel.suspensionSpring = suspension;
-            wheel.suspensionDistance = 0.3f;
+            wheel.suspensionDistance = 0.5f; // Suspension travel distance
         }
     }
 
     void Update()
     {
+        ApplyThrottle();
+        ApplySteering();
+        UpdateWheelMeshes();
+    }
+
+    void ApplyThrottle()
+    {
         foreach (WheelCollider wheel in throttleWheels)
         {
-            wheel.motorTorque = 10*strengthCoefficient * Time.deltaTime * input.throttle;
+            wheel.motorTorque = 10 * strengthCoefficient * Time.deltaTime * input.throttle;
         }
+    }
 
+    void ApplySteering()
+    {
         foreach (WheelCollider wheel in steeringWheels)
         {
-            wheel.GetComponent<WheelCollider>().steerAngle = maxTurn * input.steer;
-            wheel.transform.localEulerAngles = new Vector3(0f,input.steer*maxTurn,0f);
+            wheel.steerAngle = maxTurn * input.steer;
+        }
+    }
+
+    void UpdateWheelMeshes()
+    {
+        for (int i = 0; i < throttleWheels.Count; i++)
+        {
+            UpdateWheelMesh(throttleWheels[i], meshes[i]);
         }
 
-        foreach (GameObject mesh in meshes)
+        for (int i = 0; i < steeringWheels.Count; i++)
         {
-            float signedSpeed = Vector3.Dot(rb.velocity, transform.forward);
-            
-            mesh.transform.Rotate(signedSpeed / (2 * Mathf.PI * 0.3f), 0f, 0f);
-            //Debug.Log("Current Velocity: " + signedSpeed);
+            UpdateWheelMesh(steeringWheels[i], meshes[i + throttleWheels.Count]);
         }
+    }
+
+    void UpdateWheelMesh(WheelCollider collider, GameObject mesh)
+    {
+        Vector3 position;
+        Quaternion rotation;
+        collider.GetWorldPose(out position, out rotation);
+        mesh.transform.position = position;
+        mesh.transform.rotation = rotation;
     }
 }

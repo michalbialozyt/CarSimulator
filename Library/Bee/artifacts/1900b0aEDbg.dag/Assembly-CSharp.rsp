@@ -356,6 +356,7 @@
 "Assets/CameraManager.cs"
 "Assets/CarController.cs"
 "Assets/InputManager.cs"
+"Assets/VehicleManager.cs"
 -langversion:9.0
 
 /deterministic
