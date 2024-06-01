@@ -6,6 +6,7 @@ public class VehicleManager : MonoBehaviour
     public GameObject truck;
     public CameraManager cameraManager; // Reference to your CameraManager
     private GameObject currentVehicle;
+    private CarController carController;
 
     // Camera settings for the car
     public float carDistance = 5f;
@@ -16,6 +17,7 @@ public class VehicleManager : MonoBehaviour
     public float truckDistance = 7f;
     public float truckHeight = 3f;
     public float truckDampening = 1f;
+    public Vector3 truckCameraOffset = new Vector3(0, 0, 0);
 
     void Start()
     {
@@ -24,11 +26,16 @@ public class VehicleManager : MonoBehaviour
         car.SetActive(true);
         truck.SetActive(false);
 
+        carController = currentVehicle.GetComponent<CarController>();
+        if (carController != null)
+        {
+            carController.isTruck = false;
+        }
+
         // Update the camera focus and settings
         if (cameraManager != null)
         {
-            cameraManager.SetFocus(currentVehicle);
-            cameraManager.UpdateCameraSettings(carDistance, carHeight, carDampening);
+            cameraManager.SetFocus(currentVehicle, carDistance, carHeight, carDampening, false);
         }
     }
 
@@ -46,27 +53,39 @@ public class VehicleManager : MonoBehaviour
         if (currentVehicle == car)
         {
             currentVehicle.SetActive(false);
+            truck.SetActive(true);
             currentVehicle = truck;
-            currentVehicle.SetActive(true);
+
+            carController = currentVehicle.GetComponent<CarController>();
+            if (carController != null)
+            {
+                carController.isTruck = true;
+            }
 
             // Update camera settings for the truck
             if (cameraManager != null)
             {
-                cameraManager.SetFocus(currentVehicle);
-                cameraManager.UpdateCameraSettings(truckDistance, truckHeight, truckDampening);
+                cameraManager.SetFocus(currentVehicle, truckDistance, truckHeight, truckDampening, true);
+                cameraManager.truckOffset = truckCameraOffset; // Set the truck camera offset
             }
         }
         else
         {
             currentVehicle.SetActive(false);
+            car.SetActive(true);
             currentVehicle = car;
-            currentVehicle.SetActive(true);
+
+            carController = currentVehicle.GetComponent<CarController>();
+            if (carController != null)
+            {
+                carController.isTruck = false;
+            }
 
             // Update camera settings for the car
             if (cameraManager != null)
             {
-                cameraManager.SetFocus(currentVehicle);
-                cameraManager.UpdateCameraSettings(carDistance, carHeight, carDampening);
+                cameraManager.SetFocus(currentVehicle, carDistance, carHeight, carDampening, false);
+                cameraManager.truckOffset = Vector3.zero; // Reset the truck camera offset
             }
         }
     }

@@ -13,6 +13,7 @@ public class CarController : MonoBehaviour
     public float maxTurn = 20f;
     public Rigidbody rb;
     public Transform CM;
+    public bool isTruck = false; // Flag to identify if the vehicle is a truck
 
     void Start()
     {
@@ -50,9 +51,11 @@ public class CarController : MonoBehaviour
 
     void ApplyThrottle()
     {
+        float throttleInput = input.throttle;
+
         foreach (WheelCollider wheel in throttleWheels)
         {
-            wheel.motorTorque = 10 * strengthCoefficient * Time.deltaTime * input.throttle;
+            wheel.motorTorque = 10 * strengthCoefficient * Time.deltaTime * throttleInput;
         }
     }
 
