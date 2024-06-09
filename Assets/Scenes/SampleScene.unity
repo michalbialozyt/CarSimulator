@@ -35575,6 +35575,8 @@ MonoBehaviour:
   - {fileID: 962550105}
   - {fileID: 1802728529}
   - {fileID: 540217737}
+  - {fileID: 540217737}
+  - {fileID: 962550105}
   strengthCoefficient: 10000
   maxTurn: 20
   rb: {fileID: 1164848751}
@@ -47484,6 +47486,8 @@ MonoBehaviour:
   - {fileID: 1704623910}
   - {fileID: 1704623836}
   - {fileID: 1704623906}
+  - {fileID: 1704623906}
+  - {fileID: 1704623910}
   strengthCoefficient: 1500
   maxTurn: 20
   rb: {fileID: 1704720424}

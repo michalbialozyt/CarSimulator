@@ -69,6 +69,13 @@ public class CarController : MonoBehaviour
 
     void UpdateWheelMeshes()
     {
+        int requiredMeshCount = throttleWheels.Count + steeringWheels.Count;
+        if (meshes.Count < requiredMeshCount)
+        {
+            Debug.LogError($"Not enough meshes assigned. Required: {requiredMeshCount}, but only {meshes.Count} available.");
+            return;
+        }
+
         for (int i = 0; i < throttleWheels.Count; i++)
         {
             UpdateWheelMesh(throttleWheels[i], meshes[i]);
@@ -76,7 +83,8 @@ public class CarController : MonoBehaviour
 
         for (int i = 0; i < steeringWheels.Count; i++)
         {
-            UpdateWheelMesh(steeringWheels[i], meshes[i + throttleWheels.Count]);
+            int meshIndex = i + throttleWheels.Count;
+            UpdateWheelMesh(steeringWheels[i], meshes[meshIndex]);
         }
     }
 
