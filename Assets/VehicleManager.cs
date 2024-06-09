@@ -14,10 +14,9 @@ public class VehicleManager : MonoBehaviour
     public float carDampening = 1f;
 
     // Camera settings for the truck
-    public float truckDistance = 7f;
+    public float truckDistance = 5f;
     public float truckHeight = 3f;
     public float truckDampening = 1f;
-    public Vector3 truckCameraOffset = new Vector3(0, 0, 0);
 
     void Start()
     {
@@ -25,6 +24,7 @@ public class VehicleManager : MonoBehaviour
         currentVehicle = car;
         car.SetActive(true);
         truck.SetActive(false);
+        cameraManager.truckOffset = new Vector3(-2f, 1f, 1f);
 
         carController = currentVehicle.GetComponent<CarController>();
         if (carController != null)
@@ -66,7 +66,6 @@ public class VehicleManager : MonoBehaviour
             if (cameraManager != null)
             {
                 cameraManager.SetFocus(currentVehicle, truckDistance, truckHeight, truckDampening, true);
-                cameraManager.truckOffset = truckCameraOffset; // Set the truck camera offset
             }
         }
         else
@@ -85,7 +84,6 @@ public class VehicleManager : MonoBehaviour
             if (cameraManager != null)
             {
                 cameraManager.SetFocus(currentVehicle, carDistance, carHeight, carDampening, false);
-                cameraManager.truckOffset = Vector3.zero; // Reset the truck camera offset
             }
         }
     }

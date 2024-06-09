@@ -6,6 +6,7 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
     public InputManager input;
+    public UIManager uiManager;
     public List<WheelCollider> throttleWheels;
     public List<WheelCollider> steeringWheels;
     public List<GameObject> meshes;
@@ -47,6 +48,7 @@ public class CarController : MonoBehaviour
         ApplyThrottle();
         ApplySteering();
         UpdateWheelMeshes();
+        uiManager.changeText(transform.InverseTransformVector(rb.velocity).z, isTruck);
     }
 
     void ApplyThrottle()
