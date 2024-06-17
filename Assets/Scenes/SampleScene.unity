@@ -47816,7 +47816,7 @@ MonoBehaviour:
   - {fileID: 1704623906}
   - {fileID: 1704623906}
   - {fileID: 1704623910}
-  strengthCoefficient: 1500
+  strengthCoefficient: 2200
   maxTurn: 20
   rb: {fileID: 1704720424}
   CM: {fileID: 712085032}
